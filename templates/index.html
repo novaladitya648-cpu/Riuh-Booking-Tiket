@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block title %}Beranda{% endblock %}
+
+{% block content %}
+<section class="container py-5">
+    <div class="kartu hero-kartu">
+        <h1 class="hero-judul">Booking Tiket Konser</h1>
+        <p class="hero-teks">Pilih konser, isi form pemesanan, lalu kode tiketmu langsung keluar.</p>
+        <a href="{{ url_for('booking') }}" class="btn btn-riuh me-2">Pesan Tiket</a>
+        <a href="#event" class="btn btn-garis">Lihat Event</a>
+    </div>
+</section>
+
+<section class="container pb-4" id="event">
+    <h2 class="judul-seksi">Event Terdekat</h2>
+
+    <div class="row g-4">
+        {% for e in events %}
+        <div class="col-md-6 col-lg-4">
+            <div class="kartu event-card h-100 d-flex flex-column">
+                <div class="d-flex gap-3">
+                    <div class="tgl-box">
+                        <span class="hari">{{ e.tanggal.day }}</span>
+                        <span class="bln">{{ e.tanggal | bulan }}</span>
+                    </div>
+                    <div>
+                        <h3 class="event-nama">{{ e.nama }}</h3>
+                        <p class="event-lokasi mb-0">{{ e.lokasi }}</p>
+                    </div>
+                </div>
+
+                <div class="mt-auto pt-4">
+                    <p class="harga mb-2">Mulai {{ e.harga | rupiah }}</p>
+
+                    {% if e.stok == 0 %}
+                    <span class="lencana lencana-ink">SOLD OUT</span>
+                    {% elif e.stok <= 20 %}
+                    <span class="lencana lencana-pink">Sisa {{ e.stok }} tiket</span>
+                    {% else %}
+                    <span class="lencana lencana-mint">Sisa {{ e.stok }} tiket</span>
+                    {% endif %}
+
+                    {% if e.stok == 0 %}
+                    <span class="btn btn-riuh w-100 mt-3 disabled">Tiket Habis</span>
+                    {% else %}
+                    <a href="{{ url_for('booking', event=e.id) }}" class="btn btn-riuh w-100 mt-3">Beli Tiket</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% else %}
+        <p>Belum ada event yang tersedia.</p>
+        {% endfor %}
+    </div>
+</section>
+
+<section class="container pb-5">
+    <h2 class="judul-seksi">Cara Pesan</h2>
+    <div class="row g-4">
+        <div class="col-md-4">
+            <div class="kartu langkah"><span class="no-langkah">1</span><p class="mb-0">Pilih event dan kategori tiket (Festival atau VIP).</p></div>
+        </div>
+        <div class="col-md-4">
+            <div class="kartu langkah"><span class="no-langkah">2</span><p class="mb-0">Isi data diri di form booking, pastikan emailmu benar.</p></div>
+        </div>
+        <div class="col-md-4">
+            <div class="kartu langkah"><span class="no-langkah">3</span><p class="mb-0">Kode tiket langsung keluar. Tunjukkan saat masuk venue.</p></div>
+        </div>
+    </div>
+</section>
+{% endblock %}

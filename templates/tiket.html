@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}E-Tiket {{ pesanan.kode }}{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-6">
+
+            <div class="e-tiket">
+                <div class="e-tiket-atas">
+                    <small>E-TIKET KONSER</small>
+                    <h1 class="e-tiket-judul">{{ pesanan.event_nama }}</h1>
+                    <p class="mb-0">{{ pesanan.tanggal | tanggal }} &middot; {{ pesanan.lokasi }}</p>
+                </div>
+
+                <div class="e-tiket-badan">
+                    <dl class="baris-data">
+                        <div><dt>Nama</dt><dd>{{ pesanan.nama }}</dd></div>
+                        <div><dt>Email</dt><dd>{{ pesanan.email }}</dd></div>
+                        <div><dt>Kategori</dt><dd>{{ pesanan.kategori }}</dd></div>
+                        <div><dt>Jumlah</dt><dd>{{ pesanan.jumlah }} tiket</dd></div>
+                        <div><dt>Total Bayar</dt><dd>{{ pesanan.total | rupiah }}</dd></div>
+                    </dl>
+                </div>
+
+                <div class="e-tiket-bawah">
+                    <span class="kode">{{ pesanan.kode }}</span>
+                </div>
+            </div>
+
+            <p class="catatan mt-3">Simpan kode pesanan ini dan tunjukkan saat masuk venue.</p>
+
+            <a href="{{ url_for('booking') }}" class="btn btn-riuh me-2">Pesan Lagi</a>
+            <a href="{{ url_for('index') }}" class="btn btn-garis">Ke Beranda</a>
+
+        </div>
+    </div>
+</div>
+{% endblock %}

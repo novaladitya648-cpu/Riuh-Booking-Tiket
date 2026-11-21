@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import render_field, error_csrf %}
+
+{% block title %}Dashboard Admin{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="judul-halaman">Dashboard Admin</h1>
+
+    {# Stat card, datanya dari list statistik di app.py #}
+    <div class="row g-3 mb-4">
+        {% for s in statistik %}
+        <div class="col-6 col-lg-3">
+            <div class="kartu stat stat-{{ s.warna }}">
+                <p class="stat-label mb-1">{{ s.label }}</p>
+                <h3 class="stat-nilai mb-1">{{ s.nilai }}</h3>
+                <small>{{ s.ket }}</small>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="row g-4 mb-4">
+
+        <div class="col-lg-5">
+            <div class="kartu">
+                <h2 class="h4 mb-3">Tambah Event Baru</h2>
+
+                {{ error_csrf(form) }}
+
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    {{ render_field(form.nama, placeholder="Contoh: Sore Sunyi Live") }}
+                    {{ render_field(form.lokasi, placeholder="Contoh: Tunjungan Open Stage, Surabaya") }}
+                    {{ render_field(form.tanggal, type="text", placeholder="dd/mm/yyyy, contoh 25/12/2026") }}
+
+                    <div class="row">
+                        {{ render_field(form.harga, kolom="col-md-6 mb-3", placeholder="150000") }}
+                        {{ render_field(form.kuota, kolom="col-md-6 mb-3", placeholder="300") }}
+                    </div>
+
+                    <button type="submit" class="btn btn-riuh w-100">Simpan Event</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="col-lg-7">
+            <h2 class="h4 mb-3">Daftar Event</h2>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr>
+                            <th>No</th>
+                            <th>Event</th>
+                            <th>Tanggal</th>
+                            <th>Harga</th>
+                            <th>Stok</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for e in events %}
+                        <tr>
+                            <td>{{ loop.index }}</td>
+                            <td>{{ e.nama }}<div class="small">{{ e.lokasi }}</div></td>
+                            <td>{{ e.tanggal | tanggal }}</td>
+                            <td>{{ e.harga | rupiah }}</td>
+                            <td>{{ e.stok }} / {{ e.kuota }}</td>
+                        </tr>
+                        {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">Belum ada event.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </div>
+
+    <h2 class="h4 mb-3">Pesanan Masuk</h2>
+    <div class="table-responsive">
+        <table class="table align-middle">
+            <thead>
+                <tr>
+                    <th>Kode</th>
+                    <th>Pembeli</th>
+                    <th>Event</th>
+                    <th>Kategori</th>
+                    <th>Jumlah</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for b in bookings %}
+                <tr>
+                    <td><strong>{{ b.kode }}</strong></td>
+                    <td>{{ b.nama }}<div class="small">{{ b.email }}</div></td>
+                    <td>{{ b.event_nama }}</td>
+                    <td>{{ b.kategori }}</td>
+                    <td>{{ b.jumlah }}</td>
+                    <td>{{ b.total | rupiah }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="6" class="text-center">Belum ada pesanan masuk.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

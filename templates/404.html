@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+
+{% block title %}Halaman Tidak Ditemukan{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="kartu text-center">
+        <h1 class="hero-judul">404</h1>
+        <p class="hero-teks">Halaman yang kamu cari tidak ada, mungkin sudah sold out.</p>
+        <a href="{{ url_for('index') }}" class="btn btn-riuh">Kembali ke Beranda</a>
+    </div>
+</div>
+{% endblock %}

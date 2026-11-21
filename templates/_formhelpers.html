@@ -1,0 +1,21 @@
+{# Macro satu field: label, input Bootstrap, dan pesan error di bawahnya #}
+{% macro render_field(field, kolom="mb-3") %}
+<div class="{{ kolom }}">
+    {{ field.label(class_="form-label") }}
+    {% set kelas = "form-select" if field.type == "SelectField" else "form-control" %}
+    {% if field.errors %}
+        {% set kelas = kelas ~ " is-invalid" %}
+    {% endif %}
+    {{ field(class_=kelas, **kwargs) }}
+    {% if field.errors %}
+    <div class="invalid-feedback">{{ field.errors[0] }}</div>
+    {% endif %}
+</div>
+{% endmacro %}
+
+{# Muncul kalau token CSRF hilang atau kedaluwarsa #}
+{% macro error_csrf(form) %}
+{% if form.errors.get("csrf_token") %}
+<div class="alert alert-danger">Sesi form sudah kedaluwarsa. Muat ulang halaman lalu coba lagi.</div>
+{% endif %}
+{% endmacro %}

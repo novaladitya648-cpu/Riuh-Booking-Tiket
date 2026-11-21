@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% from "_formhelpers.html" import render_field, error_csrf %}
+
+{% block title %}Booking Tiket{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <h1 class="judul-halaman">Booking Tiket</h1>
+
+    <div class="row justify-content-center">
+
+        <div class="col-lg-7">
+            <div class="kartu">
+                {% if not tersedia %}
+                <div class="alert alert-danger mb-0">Semua event sedang sold out. Cek lagi nanti ya.</div>
+                {% else %}
+
+                {{ error_csrf(form) }}
+
+                {# novalidate supaya pesan error yang tampil dari server, bukan dari browser #}
+                <form method="POST" novalidate>
+                    {{ form.hidden_tag() }}
+
+                    {{ render_field(form.nama, placeholder="Contoh: Raka Guuning") }}
+                    {{ render_field(form.email, placeholder="nama@email.com") }}
+                    {{ render_field(form.event) }}
+
+                    <div class="row">
+                        {{ render_field(form.kategori, kolom="col-md-6 mb-3") }}
+                        {{ render_field(form.jumlah, kolom="col-md-6 mb-3", min="1", max="10") }}
+                    </div>
+
+                    <p class="catatan">Harga VIP dua kali lipat harga Festival. Maksimal 10 tiket per transaksi.</p>
+
+                    <button type="submit" class="btn btn-riuh btn-lg w-100">Pesan Sekarang</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+</div>
+{% endblock %}
